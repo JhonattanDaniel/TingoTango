@@ -30,14 +30,34 @@
                     <p:commandButton value="Último" disabled="#{listaSEController.temp.siguiente == null}">
                         <p:ajax listener="#{listaSEController.irUltimo()}" update="panelPerros"/>
                     </p:commandButton>
-                    
+
                     <p:commandButton value="Invertir Lista">
                         <p:ajax listener="#{listaSEController.invertir()}" update="panelPerros"/>
                     </p:commandButton>
-                    
+
                     <p:commandButton value="Intercambiar extremos">
                         <p:ajax listener="#{listaSEController.intercambiar()}" update="panelPerros"/>
                     </p:commandButton>
+                    <p:commandButton value="Eliminar">
+                        <p:ajax listener="#{listaSEController.eliminar(listaSEController.perroMostrar.numero)}" update="panelPerros"/>
+                    </p:commandButton>
+                    
+                    <p:inputNumber id="posicion" value="#{listaSEController.perroPosicion}" minValue="1" 
+                                   maxValue="#{listaSEController.listaPerros.contarNodos()}"> 
+                        <p:commandButton value="posicion">
+                            <p:ajax listener="#{listaSEController.encontrarPerro()}" update="panelPerros"/>
+                        </p:commandButton>
+                    </p:inputNumber>  
+
+
+                    <p:splitButton id="Genero" value="seleccione" update="panelPerros">
+                        <p:menuitem value="macho">
+                            <p:ajax listener="#{listaSEController.mostrarGen(gen)}" update="panelPerros"/>
+                        </p:menuitem>
+                        <p:menuitem value="hembra">
+                            <p:ajax listener="#{listaSEController.mostrarGen(gen)}" update="panelPerros"/>
+                        </p:menuitem>
+                    </p:splitButton>
                 </p:panelGrid>          
 
 

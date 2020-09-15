@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 
 /**
  *
- * @author carloaiza
+ * @author 
  */
 @Named(value = "listaSEController")
 @SessionScoped
@@ -26,6 +26,8 @@ public class ListaSEController implements Serializable {
     private Perro perroMostrar;
 
     private Nodo temp;
+
+    private int perroPosicion;
 
     /**
      * Creates a new instance of ListaSEController
@@ -38,13 +40,15 @@ public class ListaSEController implements Serializable {
         listaPerros = new ListaSE();
         //// Conectaría a un archivo plano o a una base de datos para llenar la 
         //lista de perros
-        listaPerros.adicionarNodo(new Perro("Pastor", (byte) 1, (byte) 3));
-        listaPerros.adicionarNodo(new Perro("Lulú", (byte) 2, (byte) 4));
-        listaPerros.adicionarNodo(new Perro("Firulais", (byte) 3, (byte) 6));
+        listaPerros.adicionarNodo(new Perro("Pastor", (byte) 1, (byte) 3, "macho"));
+        listaPerros.adicionarNodo(new Perro("Lulú", (byte) 2, (byte) 4, "hembra"));
+        listaPerros.adicionarNodo(new Perro("Firulais", (byte) 3, (byte) 6, "hembra"));
 
-        listaPerros.adicionarNodoAlInicio(new Perro("Rocky", (byte) 4, (byte) 5));
+        listaPerros.adicionarNodoAlInicio(new Perro("Rocky", (byte) 4, (byte) 5, "macho"));
         perroMostrar = listaPerros.getCabeza().getDato();
         temp = listaPerros.getCabeza();
+        
+        
 
     }
 
@@ -72,6 +76,14 @@ public class ListaSEController implements Serializable {
         this.listaPerros = listaPerros;
     }
 
+    public int getPerroPosicion() {
+        return perroPosicion;
+    }
+
+    public void setPerroPosicion(int perroPosicion) {
+        this.perroPosicion = perroPosicion;
+    }
+
     public void irSiguiente() {
         //if(temp.getSiguiente()!=null)
         //{
@@ -86,7 +98,7 @@ public class ListaSEController implements Serializable {
     }
 
     public void irUltimo() {
-        
+
         temp = listaPerros.getCabeza();
         while (temp.getSiguiente() != null) {
             temp = temp.getSiguiente();
@@ -95,17 +107,30 @@ public class ListaSEController implements Serializable {
         perroMostrar = temp.getDato();
     }
 
-    public void invertir()
-    {
+    public void invertir() {
         listaPerros.invertir();
         irPrimero();
     }
-    
-    public void intercambiar()
-    {
+
+    public void intercambiar() {
         listaPerros.intercambiarExtremos();
         irPrimero();
     }
-    
-    
+
+    public void eliminar(byte id) {
+
+        listaPerros.eliminarNodo(id);
+        irPrimero();
+    }
+
+    public Nodo encontrarPerro() {
+        perroMostrar = listaPerros.encontrarPosicion(perroPosicion).getDato();
+        return listaPerros.encontrarPosicion(perroPosicion);
+
+    }
+
+    public void mostrarGen(String gen) {
+        listaPerros.ordenarGenero(gen);
+        irPrimero();
+    }
 }
