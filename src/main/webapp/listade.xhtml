@@ -1,12 +1,106 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                template="./templates/principal.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="titulo_perros">
+        Paseando Perros - ListadoDE
+    </ui:define>
+
+    <ui:define name="content">
+        <p:growl id="grwlErroresListade"/>
+        <h:form>
+            <p:panel id="panelPerros" header="Listado perros - #{listaDEController.listaPerrosDE.contarNodosDE()}">
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Número"/>
+                    <p:outputLabel value="#{listaDEController.perroMostrar.numero}"/>
+                    <p:outputLabel value="Nombre"/>
+                    <p:outputLabel value="#{listaDEController.perroMostrar.nombre}"/>
+                    <p:outputLabel value="Edad"/>
+                    <p:outputLabel value="#{listaDEController.perroMostrar.edad}"/>
+                </p:panelGrid>
+                <p:panelGrid columns="3">
+                    <p:commandButton value="Primero" disabled="#{listaDEController.temp == listaDEController.listaPerrosDE.cabeza}">
+                        <p:ajax listener="#{listaDEController.irPrimero()}" update="panelPerros"/>
+                    </p:commandButton>
+                    <p:commandButton value="Siguiente" disabled="#{listaDEController.temp.siguiente == null}" >
+                        <p:ajax listener="#{listaDEController.irSiguiente()}" update="panelPerros"/>
+                    </p:commandButton>
+                    <p:commandButton value="Anterior" disabled="#{listaDEController.temp.anterior == null}" >
+                        <p:ajax listener="#{listaDEController.irAnterior()}" update="panelPerros"/>
+                    </p:commandButton>
+                    <p:commandButton value="Último" disabled="#{listaDEController.temp.siguiente == null}">
+                        <p:ajax listener="#{listaDEController.irUltimo()}" update="panelPerros"/>
+                    </p:commandButton>
+                    <p:commandButton value="Invertir Lista">
+                        <p:ajax listener="#{listaDEController.invertir()}" update=":grwlErroresListade, panelPerros, diagramPerros"/>
+                    </p:commandButton>
+                    <p:commandButton value="Eliminar" disabled="#{listaDEController.temp == null}">
+                        <p:ajax listener="#{listaDEController.eliminarEnSitio(listaDEController.perroMostrar)}" update="panelPerros, diagramPerros"/>
+                    </p:commandButton>
+                    </p:panelGrid>   
+                
+                <p:panel header="posicion eliminar">
+                    <p:outputLabel value="Posicion eliminar"/>
+                    <p:inputNumber id="posEliminar" value="#{listaDEController.posEliminar}" minValue="1" 
+                                   maxValue="#{listaDEController.listaPerrosDE.contarNodosDE()}"/>
+                    <p:commandButton value="Eliminar" disabled="#{listaDEController.temp == null}" update="panelPerros, diagramPerros" action="#{listaDEController.eliminarPorPosicion(listaDEController.posEliminar)}">
+                    </p:commandButton>                          
+                </p:panel>
+                
+                    <p:outputLabel value="Genero"/>
+                    <p:selectOneMenu id="genero" value="#{listaDEController.genero}">
+                        <f:selectItem itemLabel="Seleccione" itemEscaped="true"/>
+                        <f:selectItem itemValue="1" itemLabel="Macho"/>
+                        <f:selectItem itemValue="2" itemLabel="Hembra"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Ordenar" action="#{listaDEController.mostrarGen()}" update=":grwlErroresListade, diagramPerros, panelPerros"/>
+
+                 
+                <p:panel header="Intercambiar perro en la posicion">
+                    <p:outputLabel value="Ingresar posicion numero 1"/>
+                    <p:inputNumber id="datobuscar1" value="#{listaDEController.perroPosicion}" minValue="1" 
+                                   maxValue="#{listaDEController.listaPerrosDE.contarNodosDE()}"/>
+                    <p:outputLabel value="Ingresar posicion numero 2"/>
+                    <p:inputNumber id="datobuscar2" value="#{listaDEController.perroPosicion2}" minValue="1" 
+                                   maxValue="#{listaDEController.listaPerrosDE.contarNodosDE()}"/>
+                    <p:commandButton value="Intercambiar" disabled="#{listaDEController.temp == null}" update="panelPerros, diagramPerros" action="#{listaDEController.intercambiarPorPosicion()}">
+                    </p:commandButton>                          
+                </p:panel>
+            </p:panel>
+        </h:form>
+        <h:form>
+            <p:panel header="Buscar perro en la posicion">
+                <p:outputLabel value="Ingresar posicion"/>
+                <p:inputNumber id="datobuscar" value="#{listaDEController.perroPosicion}" minValue="1" 
+                               maxValue="#{listaDEController.listaPerrosDE.contarNodosDE()}"/>
+                <p:commandButton value="Buscar" disabled="#{listaDEController.temp == null}" update="dlgPerroEnc, diagramPerros" action="#{listaDEController.encontrarPerro()}" 
+                                 oncomplete="PF('dlgPerroEnc').show();">
+                </p:commandButton>                          
+            </p:panel>
+            <p:dialog header="perro encontrado" widgetVar="dlgPerroEnc" modal="true" height="150" closeOnEscape="true"> 
+                <p:panel id="dlgPerroEnc" header="Datos perro">
+                    <p:panelGrid columns="2">
+                        <h:outputText value="Nombre"/>
+                        <h:outputText value="#{listaDEController.perroEncontrado.nombre}"/>
+                        <h:outputText value="Edad"/>
+                        <h:outputText value="#{listaDEController.perroEncontrado.edad}"/>
+                        <h:outputText value="Numero"/>
+                        <h:outputText value="#{listaDEController.perroEncontrado.numero}"/>
+                        <h:outputText value="Genero"/>
+                        <h:outputText value="#{listaDEController.perroEncontrado.genero}"/>
+                    </p:panelGrid>
+                </p:panel>
+
+            </p:dialog>
+
+        </h:form>
+
+        <p:diagram id="diagramPerros" value="#{listaDEController.model}" style="height:600px" styleClass="ui-widget-content" />
+
+    </ui:define>
+</ui:composition>
 

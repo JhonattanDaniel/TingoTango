@@ -40,7 +40,7 @@
                     <p:commandButton value="Intercambiar extremos">
                         <p:ajax listener="#{listaSEController.intercambiar()}" update=":grwlErroresHome, diagramPerros, panelPerros"/>
                     </p:commandButton>
-                    <p:commandButton value="Eliminar">
+                    <p:commandButton value="Eliminar" disabled="#{listaSEController.temp == null}">
                         <p:ajax listener="#{listaSEController.eliminar(listaSEController.perroMostrar.numero)}" update="panelPerros, diagramPerros"/>
                     </p:commandButton>
 
@@ -60,7 +60,7 @@
                 <p:outputLabel value="Ingresar posicion"/>
                 <p:inputNumber id="datobuscar" value="#{listaSEController.perroPosicion}" minValue="1" 
                                maxValue="#{listaSEController.listaPerros.contarNodos()}"/>
-                <p:commandButton value="Buscar" update="dlgPerroEnc, diagramPerros" action="#{listaSEController.encontrarPerro()}" 
+                <p:commandButton value="Buscar" disabled="#{listaSEController.temp == null}" update="dlgPerroEnc, diagramPerros" action="#{listaSEController.encontrarPerro()}" 
                                  oncomplete="PF('dlgPerroEnc').show();">
                 </p:commandButton>                          
             </p:panel>

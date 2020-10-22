@@ -2,11 +2,13 @@
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
-        <Node id="ingresar_perro.xhtml" x="150" y="300" zoom="true"/>
-        <Node id="index.xhtml" x="400" y="150" zoom="true"/>
-        <Node id="templates/principal.xhtml" x="400" y="300" zoom="true"/>
-        <Node id="home.xhtml" x="150" y="150" zoom="true"/>
-        <Node id="index.html" x="650" y="150" zoom="true"/>
+        <Node id="ingresar_perro.xhtml" x="29" y="370" zoom="true"/>
+        <Node id="listade.xhtml" x="294" y="127" zoom="true"/>
+        <Node id="index.xhtml" x="589" y="48" zoom="true"/>
+        <Node id="home.xhtml" x="41" y="161" zoom="true"/>
+        <Node id="index.html" x="805" y="57" zoom="true"/>
+        <Node id="templates/principal.xhtml" x="598" y="180" zoom="true"/>
+        <Node id="ingresar_perroDE.xhtml" x="291" y="377" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

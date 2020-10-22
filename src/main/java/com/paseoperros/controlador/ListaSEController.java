@@ -45,9 +45,9 @@ public class ListaSEController implements Serializable {
     private DefaultDiagramModel model;
 
     private boolean entrar = false;
-    
+
     private int seleccionUbicacion = 0;
-    
+
     private int genero = 0;
 
     /**
@@ -61,17 +61,16 @@ public class ListaSEController implements Serializable {
         listaPerros = new ListaSE();
         //// Conectaría a un archivo plano o a una base de datos para llenar la 
         //lista de perros
-      //  listaPerros.adicionarNodo(new Perro("Pastor", (byte) 1, (byte) 3, "macho"));
-       // listaPerros.adicionarNodo(new Perro("Lulú", (byte) 2, (byte) 4, "hembra"));
-       // listaPerros.adicionarNodo(new Perro("Firulais", (byte) 3, (byte) 6, "hembra"));
+        //  listaPerros.adicionarNodo(new Perro("Pastor", (byte) 1, (byte) 3, "macho"));
+        // listaPerros.adicionarNodo(new Perro("Lulú", (byte) 2, (byte) 4, "hembra"));
+        // listaPerros.adicionarNodo(new Perro("Firulais", (byte) 3, (byte) 6, "hembra"));
 
-       // listaPerros.adicionarNodoAlInicio(new Perro("Rocky", (byte) 4, (byte) 5, "macho"));
-       // perroMostrar = listaPerros.getCabeza().getDato();
+        // listaPerros.adicionarNodoAlInicio(new Perro("Rocky", (byte) 4, (byte) 5, "macho"));
+        // perroMostrar = listaPerros.getCabeza().getDato();
         temp = listaPerros.getCabeza();
 
         inicializarModelo();
 
-       
     }
 
     public int getGenero() {
@@ -81,7 +80,7 @@ public class ListaSEController implements Serializable {
     public void setGenero(int genero) {
         this.genero = genero;
     }
-    
+
     public int getSeleccionUbicacion() {
         return seleccionUbicacion;
     }
@@ -139,13 +138,13 @@ public class ListaSEController implements Serializable {
     }
 
     public void irPrimero() {
-        if(listaPerros.getCabeza()!= null){
+        if (listaPerros.getCabeza() != null) {
             temp = listaPerros.getCabeza();
-        perroMostrar = temp.getDato();
-        }else {
+            perroMostrar = temp.getDato();
+        } else {
             JsfUtil.addErrorMessage("No hay datos en la lista");
         }
-        
+
     }
 
     public void irUltimo() {
@@ -174,10 +173,15 @@ public class ListaSEController implements Serializable {
     }
 
     public void eliminar(byte id) {
-
-        listaPerros.eliminarNodo(id);
-        irPrimero();
-        inicializarModelo();
+        if (temp.getSiguiente() != null) {
+            listaPerros.eliminarNodo(id);
+            irPrimero();
+            inicializarModelo();
+        } else {
+            listaPerros.eliminarNodo(id);
+            perroMostrar = new Perro();
+            inicializarModelo();
+        }
     }
 
     public void encontrarPerro() {
@@ -305,21 +309,31 @@ public class ListaSEController implements Serializable {
         perroEncontrado = new Perro();
         return "crear";
     }
-    
-    public void guardarPerro(){
-        
-        switch(seleccionUbicacion){
-            case 1: listaPerros.adicionarNodoAlInicio(perroEncontrado); 
-                break;
-                case 2:listaPerros.adicionarNodo(perroEncontrado); 
+
+    public void guardarPerro() {
+
+        if (listaPerros.comprobarID(perroEncontrado) == true) {
+
+            switch (seleccionUbicacion) {
+                case 1:
+                    listaPerros.adicionarNodoAlInicio(perroEncontrado);
                     break;
-                    default: listaPerros.adicionarNodo(perroEncontrado); 
+                case 2:
+                    listaPerros.adicionarNodo(perroEncontrado);
+                    break;
+                default:
+                    listaPerros.adicionarNodo(perroEncontrado);
+            }
+
+            perroEncontrado = new Perro();
+            irPrimero();
+            JsfUtil.addSuccessMessage("Se adiciono el perro a la lista");
+
+        } else {
+            JsfUtil.addErrorMessage("El numero del perro ya existe");
         }
-        perroEncontrado = new Perro();
-        irPrimero();
-        JsfUtil.addSuccessMessage("Se adiciono el perro a la lista");
     }
-    
+
     public String irHome() {
         perroEncontrado = new Perro();
         inicializarModelo();
