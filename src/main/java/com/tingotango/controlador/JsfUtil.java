@@ -1,4 +1,4 @@
-package com.paseoperros.controlador;
+ package com.tingotango.controlador;
 
 import java.util.List;
 import javax.faces.application.FacesMessage;

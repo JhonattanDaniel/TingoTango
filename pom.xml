@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.paseoperros</groupId>
-    <artifactId>paseoperros</artifactId>
+    <groupId>com.tingotango</groupId>
+    <artifactId>tingotango</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>paseoperros</name>
+    <name>tingotango</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -21,8 +21,8 @@
             <version>2.3.9</version>
         </dependency>
         <dependency>
-            <groupId>co.edu.umanizales.listase</groupId>
-            <artifactId>ListaSE</artifactId>
+            <groupId>co.edu.umanizales.listainfantes</groupId>
+            <artifactId>ListaInfantes</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

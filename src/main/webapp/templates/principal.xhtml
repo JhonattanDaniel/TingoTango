@@ -8,17 +8,17 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>
-            <ui:insert name="titulo_perros">            
+            <ui:insert name="titulo_Infantes">            
             </ui:insert>
         </title>
         <style type="text/css">
-            .ui-diagram-element {   
-                width:14em; 
-                height:4em;     
-                line-height:4em;
+            .ui-diagram-element {
+                width:5em; 
+                height:5em;     
+                line-height:5em;
                 text-align: center;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
-                border-radius: 4px;
+                box-shadow: 0 10px -10px rgba(0, 0, 0, 0.8);
+                border-radius: 100px;
                 border: 1px solid transparent;
                 background-color: #98AFC7;
                 color: #ffffff;
@@ -51,11 +51,9 @@
                 <h:form>
                     <p:menubar>
                         <p:submenu label="Inicio" icon="pi pi-file">
-                            <p:submenu label="Gestión Perros" icon="pi pi-briefcase">
-                                <p:menuitem value="Listar Perros" action="#{listaSEController.irHome()}" ajax="false" />
-                                <p:menuitem value="Ingresar Perro" action="#{listaSEController.irCrearPerro()}" />
-                                <p:menuitem value="Listar Perros DE" action="#{listaDEController.irListaDE()}" ajax="false" />
-                                <p:menuitem value="Ingresar Perro DE" action="#{listaDEController.irCrearPerroDE()}" />
+                            <p:submenu label="Tingo Tango" icon="pi pi-briefcase">
+                                <p:menuitem value="Tingo-Tango" action="#{listaInfantesController.irTingoTango()}" ajax="false" />
+                                <p:menuitem value="Ingresar Infante" action="#{listaInfantesController.irCrearInfante()}" />
                             </p:submenu>
                             <p:menuitem value="Open" url="#" />
                             <p:separator />

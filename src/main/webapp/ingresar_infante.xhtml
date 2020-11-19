@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./templates/principal.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="titulo_Infantes">
+        Ingresar Infante - Formulario
+    </ui:define>
+
+    <ui:define name="content">
+        <p:growl id="grwlErrores"/>
+        <h:form id="frmInfante" prependId="false">
+            <p:panel id="registrarInfante" header="Formulario de Registro de Infantes">
+                <p:panelGrid columns="2">
+                    <h:outputText value="Nombre"/>
+                    <p:inputText id="Nombre" value="#{listaInfantesController.infanteGuardar.nombre}" required="true"/>
+                    <h:outputText value="ID"/>
+                    <p:spinner value="#{listaInfantesController.infanteGuardar.id}" min="1" required="true"/>
+                    <h:outputText value="Genero"/>
+                    <p:selectOneMenu id="genero" required="true" value="#{listaInfantesController.infanteGuardar.genero}">
+                         <f:selectItem itemLabel="Seleccione" itemEscaped="true"/>
+                        <f:selectItem itemValue="true" itemLabel="Masculino"/>
+                        <f:selectItem itemValue="false" itemLabel="Femenino"/>
+                    </p:selectOneMenu>
+                   
+                    <p:commandButton value="Guardar" action="#{listaInfantesController.guardarInfante()}" update=":grwlErrores, registrarInfante"/>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+

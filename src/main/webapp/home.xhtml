@@ -6,83 +6,109 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <ui:define name="titulo_perros">
-        Paseando Perros - Listado
+    <ui:define name="titulo_Infantes">
+        Tingotango - Listado
     </ui:define>
 
     <ui:define name="content">
         <p:growl id="grwlErroresHome"/>
-        <h:form>
-            <p:panel id="panelPerros" header="Listado perros - #{listaSEController.listaPerros.contarNodos()}">
-                <p:panelGrid columns="2">
-                    <p:outputLabel value="Número"/>
-                    <p:outputLabel value="#{listaSEController.perroMostrar.numero}"/>
-                    <p:outputLabel value="Nombre"/>
-                    <p:outputLabel value="#{listaSEController.perroMostrar.nombre}"/>
-                    <p:outputLabel value="Edad"/>
-                    <p:outputLabel value="#{listaSEController.perroMostrar.edad}"/>
+        <h:form id="frmInfantes" prependId="false">
+            <p:panel id="panelInfantes" header=" Tabla de infantes" style="width:400px">
+                <p:panelGrid>
+                    <h:outputText value="Cantidad de Infantes"/>
+                    <p:spinner value="#{listaInfantesController.cantInfantes}" min="2" required="true"/>
+                    <p:commandButton value="Ingresar" action="#{listaInfantesController.participacionInfantes()}" 
+                                     update=":grwlErroresHome, panelInfantes, panelOportunidad, diagrama" />
                 </p:panelGrid>
-                <p:panelGrid columns="3">
-                    <p:commandButton value="Primero" disabled="#{listaSEController.temp == listaSEController.listaPerros.cabeza}">
-                        <p:ajax listener="#{listaSEController.irPrimero()}" update="panelPerros"/>
-                    </p:commandButton>
-                    <p:commandButton value="Siguiente" disabled="#{listaSEController.temp.siguiente == null}" >
-                        <p:ajax listener="#{listaSEController.irSiguiente()}" update="panelPerros"/>
-                    </p:commandButton>
-                    <p:commandButton value="Último" disabled="#{listaSEController.temp.siguiente == null}">
-                        <p:ajax listener="#{listaSEController.irUltimo()}" update="panelPerros"/>
-                    </p:commandButton>
+                <p:panelGrid>
+                    <p:dataTable id="listaInfantes" value="#{listaInfantesController.listadoInfantes}" 
+                                 var="inf">
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputLabel value="Nombre"/>
+                            </f:facet>
+                            <p:outputLabel value="#{inf.nombre}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputLabel value="Genero"/>
+                            </f:facet>
+                            <p:outputLabel value="#{inf.id}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="panelOportunidad" header=" Juego y Oportunidades" style="width:400px; position: absolute; top: 69px; left: 430px;">
+                <p:panelGrid>
+                    <p:dataTable id="listaOportunidades" value="#{listaInfantesController.tablaOportunidades}" 
+                                 var="oport">
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputLabel value="Nombre"/>
+                            </f:facet>
+                            <p:outputLabel value="#{oport.infante.nombre}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputLabel value="Oportunidades"/>
+                            </f:facet>
+                            <p:outputLabel value="#{oport.oportunidad}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputLabel value=" Reingresar"/>
+                            </f:facet>
+                            <p:commandButton value="seleccionar" disabled="#{oport.oportunidad != 0}" immediate="true">
+                                <p:ajax listener="#{listaInfantesController.selecInfante(oport)}" update=":grwlErroresHome"/>
 
-                    <p:commandButton value="Invertir Lista">
-                        <p:ajax listener="#{listaSEController.invertir()}" update=":grwlErroresHome, panelPerros, diagramPerros"/>
-                    </p:commandButton>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </p:panelGrid>
+            </p:panel>
 
-                    <p:commandButton value="Intercambiar extremos">
-                        <p:ajax listener="#{listaSEController.intercambiar()}" update=":grwlErroresHome, diagramPerros, panelPerros"/>
-                    </p:commandButton>
-                    <p:commandButton value="Eliminar" disabled="#{listaSEController.temp == null}">
-                        <p:ajax listener="#{listaSEController.eliminar(listaSEController.perroMostrar.numero)}" update="panelPerros, diagramPerros"/>
-                    </p:commandButton>
-
-                     <p:outputLabel value="Genero"/>
-                     <p:selectOneMenu id="genero" value="#{listaSEController.genero}">
-                         <f:selectItem itemLabel="Seleccione" itemEscaped="true"/>
-                        <f:selectItem itemValue="1" itemLabel="Macho"/>
-                        <f:selectItem itemValue="2" itemLabel="Hembra"/>
+            <p:commandButton id="btn_iniciar" value="#{listaInfantesController.reiniciar}" 
+                             action="#{listaInfantesController.estadoJugar()}" 
+                             update="grwlErroresHome, panelOportunidad, btn_iniciar"/>
+            <p:poll interval="2" listener="#{listaInfantesController.pasarColor()}" 
+                    rendered="#{listaInfantesController.estadoCiclo}" update="diagrama"/> 
+            
+                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                    <h:outputText value="Direccion: " />
+                    <p:inputSwitch value="#{listaInfantesController.direccion}" onLabel="Izquierda"  offLabel="Derecha"/>
+                </h:panelGrid> 
+            
+            <p:panel style="width:400px; position: absolute; top: 200px; left: 850px;">
+                <p:panelGrid>
+                    <p:outputLabel value="Posicion: "/>
+                    <p:inputNumber id="datobuscar" value="#{listaInfantesController.posicionIngreso}" minValue="1" required="true"/>
+                    <p:commandButton value="Reingresar" action="#{listaInfantesController.reingresarPorPosicion()}" 
+                                     update="grwlErroresHome, diagrama, panelOportunidad"/>
+                </p:panelGrid> 
+            </p:panel>
+            <p:panel style="width:150px; position: absolute; top: 300px; left: 850px;">
+                <h:outputText value="Oportunidades"/>
+                <p:spinner value="#{listaInfantesController.vidas}" min="1"  max="3" required="true"/>
+            </p:panel>
+            <p:panel style="width:400px; position: absolute; top: 69px; left: 850px;">
+                <p:panelGrid>
+                    <h:outputText value="Genero: "/>
+                    <p:selectOneMenu id="genero" required="true" value="#{listaInfantesController.gen}">
+                        <f:selectItem itemLabel="Seleccione" itemEscaped="true"/>
+                        <f:selectItem itemValue="true" itemLabel="Masculino"/>
+                        <f:selectItem itemValue="false" itemLabel="Femenino"/>
                     </p:selectOneMenu>
-                     <p:commandButton value="Ordenar" action="#{listaSEController.mostrarGen()}" update=":grwlErroresHome, diagramPerros, panelPerros"/>
-                    
-                </p:panelGrid>          
+                    <p:commandButton value="Reingresar Genero" action="#{listaInfantesController.ingresarPorGenero()}" 
+                                     update="grwlErroresHome, diagrama, panelOportunidad"/>
+
+                    <p:commandButton value="Retirar por genero" action="#{listaInfantesController.retirarPorGenero()}" 
+                                     update="grwlErroresHome, diagrama, panelOportunidad"/>
+                </p:panelGrid>
             </p:panel>
-        </h:form>
-        <h:form>
-            <p:panel header="Buscar perro en la posicion">
-                <p:outputLabel value="Ingresar posicion"/>
-                <p:inputNumber id="datobuscar" value="#{listaSEController.perroPosicion}" minValue="1" 
-                               maxValue="#{listaSEController.listaPerros.contarNodos()}"/>
-                <p:commandButton value="Buscar" disabled="#{listaSEController.temp == null}" update="dlgPerroEnc, diagramPerros" action="#{listaSEController.encontrarPerro()}" 
-                                 oncomplete="PF('dlgPerroEnc').show();">
-                </p:commandButton>                          
-            </p:panel>
-            <p:dialog header="perro encontrado" widgetVar="dlgPerroEnc" modal="true" height="150" closeOnEscape="true"> 
-                <p:panel id="dlgPerroEnc" header="Datos perro">
-                    <p:panelGrid columns="2">
-                        <h:outputText value="Nombre"/>
-                        <h:outputText value="#{listaSEController.perroEncontrado.nombre}"/>
-                        <h:outputText value="Edad"/>
-                        <h:outputText value="#{listaSEController.perroEncontrado.edad}"/>
-                        <h:outputText value="Numero"/>
-                        <h:outputText value="#{listaSEController.perroEncontrado.numero}"/>
-                        <h:outputText value="Genero"/>
-                        <h:outputText value="#{listaSEController.perroEncontrado.genero}"/>
-                    </p:panelGrid>
-                </p:panel>
+        </h:form>   
 
-            </p:dialog>
-
-        </h:form>
-
-        <p:diagram id="diagramPerros" value="#{listaSEController.model}" style="height:600px" styleClass="ui-widget-content" />
+        <p:diagram id="diagrama" value="#{listaInfantesController.model}" style="height:600px;"
+                   styleClass="ui-widget-content"/>
 
     </ui:define>
 
